@@ -17,10 +17,7 @@
                     </div>
                 </div>
             </div>
-            <p class="w-full text-primaryGray dark:text-white sm:text-lg sm:font-medium [word-break:break-word]">Loremipsumdol orsitametconsecteturadipisicingeliNum quamnatusinciduntvoluptatumanimiabaperiamrationeofficiisteneturAccusamuscommodi voluptatem consequatur illo, maiores eos suscipit aperiam reiciendis enim quam?</p>
-            <!-- <div class="text-primaryGray text-left w-full dark:text-white sm:text-lg font-medium text-wrap flex flex-wrap " v-if="profile.status">
-            <p>adsfasdfasdifjs<br/>aod<br/>i<br/>fjaosidfjoasidjfosaidfjaosdifjsaodifjosaidfjosaidfj</p>
-            </div> -->
+            <p v-if="profile.status" class="w-full text-primaryGray dark:text-white sm:text-lg sm:font-medium [word-break:break-word]">{{ profile.status }}</p>
         </div>
         <FollowersModal :profile="profile" v-if="showFollowersModal" @close-modal="showFollowersModal=false"/>
         <FollowsModal :profile="profile" v-if="showFollowedModal" @close-modal="showFollowedModal=false"/>
