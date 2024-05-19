@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-white select-none dark:bg-primaryBlack w-full h-16 flex justify-evenly items-center gap-4 relative">
+    <nav @pointerdown="expanded=false"  class="bg-white select-none dark:bg-primaryBlack w-full h-16 flex justify-evenly items-center gap-4 relative">
         <NuxtLink :to="user ? '/' : '/explore'" class="h-8 w-32 min-w-8 bg-contain bg-no-repeat bg-center bg-[url('public/tweeter-small.svg')] md:bg-[url('public/tweeter.svg')] md:dark:bg-[url('public/tweeter-light.svg')] ">
             <span class="sr-only">Tweeter logo</span>
         </NuxtLink>
@@ -9,9 +9,6 @@
                 <Icon name="material-symbols:dark-mode" class="dark:!hidden"/>
                 <span class="sr-only">Toggle theme</span>
             </button>
-            <!-- <button @click="setTheme" class="flex text-center justify-center items-center h-full dark:before:content-['Dark'] before:content-['Light'] before:text-primaryGray before:font-semibold before:dark:text-white cursor-pointer">
-                <span class="sr-only">Toggle theme</span>
-            </button> -->
             <template v-if="user">
                 <MainHeaderButton to="/" :active="isHome">Home</MainHeaderButton >
                 <MainHeaderButton to="/explore" :active="isExplore">Explore</MainHeaderButton >
@@ -28,7 +25,7 @@
                 <ActionButton>Login</ActionButton>
             </NuxtLink>
         </div>
-        <button @click="expand" class="sm:hidden h-full min-w-6" data-collapse-toggle="navbar" aria-controls="navbar" aria-expanded="false">
+        <button @pointerdown.stop="expanded=!expanded" class="sm:hidden h-full min-w-6" data-collapse-toggle="navbar" aria-controls="navbar" :aria-expanded="expanded">
             <Icon class="h-full w-6 text-black dark:text-white" name="material-symbols:menu"/>
         </button>
         <aside @pointerdown="expanded=false" class="absolute z-20 sm:hidden dark:text-white font-medium top-full left-0 h-[calc(100vh-4rem)] " :class="expanded ? 'w-screen' : 'w-0'">
@@ -59,11 +56,10 @@
     const isExplore = computed(() => route.fullPath === '/explore')
     const isBookmarks = computed(() => route.fullPath === '/bookmarks')
     const expanded = ref<boolean>(false)
-    const expand = (e:Event) => {
-        const target = e.currentTarget as HTMLButtonElement
-        expanded.value = !expanded.value
-        target.ariaExpanded = String(expanded.value)
-    }
+    watch(() => route.path, () => {
+        expanded.value=false
+    })
+
     const setTheme = () => {
         if(document.documentElement.getAttribute('data-mode') === 'dark') {
             localStorage.setItem('theme','light')

@@ -14,7 +14,7 @@
             </div>
             <div class="flex justify-end w-full gap-4">
                 <p class="w-40 text-right">User avatar</p>
-                <div class="w-full flex gap-20">
+                <div class="w-full flex flex-wrap space-x-20 space-y-4">
                     <div class="w-40 aspect-square relative rounded-2xl overflow-hidden border-4 border-primaryGray shadow-md">
                         <div v-if="avatarProgress>0" class="absolute w-full h-full top-0 left-0 z-20 flex flex-col justify-center">
                             <div class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
@@ -44,11 +44,10 @@
                     </div>
                 </div>
             </div>
-            <div class="w-full flex gap-4">
-                <div class="w-40"></div>
-                <div class="flex w-full justify-center gap-40">
-                    <button type="reset" class="bg-red-300 active:opacity-80 w-20">discrard</button>
-                    <button type="submit" class="bg-green-300 active:opacity-80 w-20">accept</button>
+            <div class="w-full flex gap-4 ml-[calc(min(9rem,max(calc(40%-9rem),0)))]">
+                <div class="flex w-full max-w-96 m-auto justify-between">
+                    <button type="reset" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Discard</button>
+                    <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Accept</button>
                 </div>
             </div>
         </div>

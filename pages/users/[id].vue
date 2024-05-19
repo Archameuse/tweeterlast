@@ -8,13 +8,13 @@
             <div>
                 <aside class="sticky top-4 py-5 w-full lg:w-80 shrink-0 flex flex-col gap-4 bg-white dark:bg-secondaryGray shadow-md dark:shadow-primaryBlack rounded-lg h-fit">
                     <SectionFragment @click="() => type='tweets'" :active="type==='tweets'">Tweets</SectionFragment>
-                        <SectionFragment @click="() => type='replies'" :active="type==='replies'">Tweets & replies</SectionFragment>
-                        <SectionFragment @click="() => type='media'" :active="type==='media'">Media</SectionFragment>
-                        <SectionFragment @click="() => type='likes'" :active="type==='likes'">Likes</SectionFragment>
+                    <SectionFragment @click="() => type='replies'" :active="type==='replies'">Tweets & replies</SectionFragment>
+                    <SectionFragment @click="() => type='media'" :active="type==='media'">Media</SectionFragment>
+                    <SectionFragment @click="() => type='likes'" :active="type==='likes'">Likes</SectionFragment>
                 </aside>
             </div>
             <div class="flex flex-col gap-10 w-full h-fit flex-1">
-                <div v-if="profile" :class="profile.banner ? 'lg:relative lg:-top-12' : 'my-12'" class="relative h-44 w-full max-w-4xl m-auto">
+                <div v-if="profile" :class="profile.banner ? 'lg:relative lg:-top-12' : 'my-12'" class="relative w-full max-w-screen-md m-auto">
                     <ProfileTab :profile="profile"/>
                 </div>
                 <div :class="status==='pending' && 'blur-md cursor-wait [&_*]:pointer-events-none'" class="flex flex-col gap-10 max-w-xl m-auto w-full lg:max-w-fit">
