@@ -32,7 +32,7 @@
                 <PostAction :loading="likeStatus==='pending'" @click="clickLike" :active="post.liked" type="like" icon="mdi:heart-outline"><span class="hidden sm:block">Like</span></PostAction>
                 <PostAction :loading="saveStatus==='pending'" @click="clickSave" :active="post.saved" type="save" icon="material-symbols:bookmark-outline"><span class="hidden sm:block">Save</span></PostAction>
             </div>
-            <div class="min-h-10 h-fit flex gap-4" v-if="user">
+            <div class="min-h-10 h-fit flex gap-4" v-if="user&&computeOnlyFollowers">
                 <div class="h-10">
                     <UserAvatar :image="user.image"/>
                 </div>
@@ -50,6 +50,7 @@
 </template>
 
 <script setup lang="ts">
+
 const props = defineProps({
     post: {
         type: Object as PropType<Tweet>,
@@ -142,5 +143,14 @@ const date = computed(() => {
     if(now.getFullYear() > date.getFullYear()) return `${monthName(date.getMonth())} ${date.getDate()}, ${date.getFullYear()}`
     if(now.getDate() === date.getDate() && now.getMonth() === date.getMonth()) return `Today, at ${getTime()}`
     return `${date.getDate()} ${monthName(date.getMonth())} at ${getTime()}`
+})
+
+const computeOnlyFollowers = computed(() => {
+    if(!user.value) return false
+    if(props.post.onlyFollowers) {
+        if(props.post.user.followed||props.post.user.id===user.value.id) return true
+        return false
+    }
+    return true
 })
 </script>

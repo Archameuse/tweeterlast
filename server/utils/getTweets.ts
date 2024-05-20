@@ -13,6 +13,7 @@ export default async (limitPage:number, page:string, user?:User|null,type?:strin
     const isSaved = user ? sql<boolean>`(select exists(select 1 from "saves" where ( ("saves"."tweet_id" = "tweets"."id") and ("saves"."user_id" = ${user.id}))))` : sql<boolean>`false`
     const isRetweeted = user ? sql<boolean>`(select exists(select 1 from "retweets" where ( ("retweets"."tweet_id" = "tweets"."id") and ("retweets"."user_id" = ${user.id}))))`.as('retweeted') : sql<boolean>`false`.as('retweeted')
     const isFollowedUser = user ? sql`(( "tweets"."senderID" in (select "id" from "users" where ( "users"."id" in (select "followed_id" from "follows" where ("follows"."follower_id" = ${user.id}))))))` : sql<boolean>`false`
+    const isFollowedSender = user ? sql`(( "tweets"."senderID" in (select "id" from "users" where ( "users"."id" in (select "follower_id" from "follows" where ("follows"."followed_id" = ${user.id}))))))` : sql<boolean>`false`
     const retweetUser = alias(users, 'retweetUser')
 
     const whereProfile = () => {
@@ -29,7 +30,7 @@ export default async (limitPage:number, page:string, user?:User|null,type?:strin
 
     const normalPosts = db.select({
         ...postFields,
-        user: {id: users.id, username: users.username, image:users.image},
+        user: {id: users.id, username: users.username, image:users.image, followed: isFollowedSender},
         likes: countLikes,
         liked: isLiked,
         saved: isSaved,
@@ -52,7 +53,7 @@ export default async (limitPage:number, page:string, user?:User|null,type?:strin
     const retweetPosts = db.select({
         ...postFields,
         date: retweets.date,
-        user: {id: users.id, username: users.username, image:users.image},
+        user: {id: users.id, username: users.username, image:users.image, followed: isFollowedSender},
         likes: countLikes,
         liked: isLiked,
         saved: isSaved,

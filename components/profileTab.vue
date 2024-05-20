@@ -19,6 +19,9 @@
             </div>
             <p v-if="profile.status" class="w-full text-primaryGray dark:text-white sm:text-lg sm:font-medium [word-break:break-word]">{{ profile.status }}</p>
         </div>
+        <div class="ml-5 mt-4 w-20 sm:w-auto" v-if="user && user.id!==profile.id">
+            <FollowButton @response="follow" :profileId="profile.id" :isFollowed="profile.followed"/>
+        </div>
         <FollowersModal :profile="profile" v-if="showFollowersModal" @close-modal="showFollowersModal=false"/>
         <FollowsModal :profile="profile" v-if="showFollowedModal" @close-modal="showFollowedModal=false"/>
     </div>
@@ -48,21 +51,4 @@
         if(followers >= 10000) return symbolFormatter(followers, 1)
         return followers.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     })
-    // export default defineNuxtComponent({
-    //     props: {
-    //         profile: Object as PropType<Profile>
-    //     },
-    //     computed: {
-    //         styledFollowed() {
-    //             const followed = this.followed
-    //             if(followed >= 10000) return symbolFormatter(followed, 1)
-    //             return followed.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    //         },
-    //         styledFollowers() {
-    //             const followers = this.followers
-    //             if(followers >= 10000) return symbolFormatter(followers, 1)
-    //             return followers.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    //         }
-    //     }
-    // })
 </script>

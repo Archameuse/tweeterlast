@@ -5,6 +5,7 @@ declare global {
         id: number;
         username: string;
         image?: string;
+        followed?: boolean;
         // banner?: string;
         // status?: string;
     }
