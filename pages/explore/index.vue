@@ -21,6 +21,7 @@
 
             <div :class="loading==='pending' && 'blur-md cursor-wait [&_*]:pointer-events-none'" class="flex flex-col gap-10 max-w-xl m-auto w-full lg:max-w-fit">
                 <ProfilePost v-for="tweet in tweets"
+                    @refresh-reply="refresh"
                     :post="tweet"
                     />
             </div>
@@ -39,7 +40,7 @@ const isBottom = useIsBottom(() => {
 const status = ref<'top'|'latest'|'media'>('latest')
 const searchQuery = ref<string>()
 const search = ref<string>()
-const {data:tweets, status:loading} = await useFetch<Tweet[]>(`/api/tweets/explore`, {
+const {data:tweets, status:loading, refresh} = await useFetch<Tweet[]>(`/api/tweets/explore`, {
     query: {
         type: status,
         search: searchQuery,

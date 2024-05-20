@@ -25,6 +25,7 @@ declare global {
         liked?: boolean;
         saved?: boolean;
         retweeted?: boolean;
+        reply?: {id:number;name:string;};
     }
 
     class Profile {

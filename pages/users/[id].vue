@@ -18,7 +18,7 @@
                     <ProfileTab :profile="profile"/>
                 </div>
                 <div :class="status==='pending' && 'blur-md cursor-wait [&_*]:pointer-events-none'" class="flex flex-col gap-10 max-w-xl m-auto w-full lg:max-w-fit">
-                    <ProfilePost v-for="tweet in tweets"
+                    <ProfilePost @refresh-reply="refresh" v-for="tweet in tweets"
                         :post="tweet"
                         />
                 </div>
@@ -49,7 +49,7 @@
         page.value = Math.max(Math.floor((tweets.value?.length||0)/10)+1, page.value)
     }, container)
 
-    const {data:tweets, status} = await useFetch<Tweet[]>('/api/tweets/profile', {
+    const {data:tweets, status, refresh} = await useFetch<Tweet[]>('/api/tweets/profile', {
         query: {
             id,
             type,

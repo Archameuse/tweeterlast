@@ -3,7 +3,7 @@
         <div class="flex flex-col gap-10 w-full h-fit">
             <TweetInput @refresh="refresh" :limit="300"/>
             <div :class="status==='pending' && 'blur-md cursor-wait [&_*]:pointer-events-none'" class="flex flex-col gap-10 max-w-xl m-auto w-full lg:max-w-fit">
-                <ProfilePost v-for="tweet in tweets"
+                <ProfilePost @refresh-reply="refresh" v-for="tweet in tweets"
                     :post="tweet"
                     />
             </div>

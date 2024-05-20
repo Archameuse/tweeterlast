@@ -5,6 +5,12 @@
             {{ post.retweetedBy }} Retweeted
         </div>
         <div class="w-full p-5 bg-white dark:bg-primaryBlack shadow-md rounded-md flex flex-col gap-5">
+            <div v-if="post.reply?.id">
+                Reply to 
+                <NuxtLink :to="`./users/${post.reply.id}`">
+                    @{{ post.reply.name }}    
+                </NuxtLink>
+            </div>
             <NuxtLink :to="'/users/' + post.user.id" v-if="post.user">
                 <div class="flex h-10 gap-4">
                     <UserAvatar :image="post.user.image"/>
@@ -58,6 +64,7 @@ const props = defineProps({
     }
 })
 const { user } = useUser()
+const emit = defineEmits(['refreshReply'])
 const method = ref<'POST'|'DELETE'>()
 const showReply = ref<boolean>(false)
 const showReplies = ref<boolean>(false)
@@ -126,6 +133,7 @@ const closeReply = (success?:true) => {
     showReply.value = false
     if(success) {
         props.post.replies++
+        emit('refreshReply')
     }
 }
 

@@ -12,6 +12,10 @@ export default async (limitPage:number, page:string, user?:User|null,type?:strin
     const isLiked = user ? sql<boolean>`(select exists(select 1 from "likes" where ( ("likes"."tweet_id" = "tweets"."id") and ("likes"."user_id" = ${user.id}))))`.as('liked') : sql<boolean>`false`.as('liked')
     const isSaved = user ? sql<boolean>`(select exists(select 1 from "saves" where ( ("saves"."tweet_id" = "tweets"."id") and ("saves"."user_id" = ${user.id}))))` : sql<boolean>`false`
     const isRetweeted = user ? sql<boolean>`(select exists(select 1 from "retweets" where ( ("retweets"."tweet_id" = "tweets"."id") and ("retweets"."user_id" = ${user.id}))))`.as('retweeted') : sql<boolean>`false`.as('retweeted')
+    // const replyId = sql<number>`(select "id" from "users" where ("users"."id" = (select "senderID" from "tweets" where ("tweets"."id" = (select "reply_to" from "replies" where ("replies"."reply_with" = "tweets"."id"))))))`.as('replyId')
+    // const replyId = sql<number>`(select "reply_to" from "replies" where ("replies"."reply_with" = "tweets"."id"))`.as('replyId')
+    const replyId = sql<number>`(select "senderID" from "tweets" as "replyTweet" where ("replyTweet"."id" = (select "reply_to" from "replies" where ("replies"."reply_with" = "tweets"."id"))))`.as('replyId')
+    const replyName = sql<string>`(select "username" from "users" where( "users"."id" = (select "senderID" from "tweets" as "replyTweet" where ("replyTweet"."id" = (select "reply_to" from "replies" where ("replies"."reply_with" = "tweets"."id"))))))`.as('replyName')
     const isFollowedUser = user ? sql`(( "tweets"."senderID" in (select "id" from "users" where ( "users"."id" in (select "followed_id" from "follows" where ("follows"."follower_id" = ${user.id}))))))` : sql<boolean>`false`
     const isFollowedSender = user ? sql`(( "tweets"."senderID" in (select "id" from "users" where ( "users"."id" in (select "follower_id" from "follows" where ("follows"."followed_id" = ${user.id}))))))` : sql<boolean>`false`
     const retweetUser = alias(users, 'retweetUser')
@@ -37,6 +41,10 @@ export default async (limitPage:number, page:string, user?:User|null,type?:strin
         replies: countReplies,
         retweets: countRetweets,
         retweeted: isRetweeted,
+        reply: {
+            id: replyId,
+            name: replyName
+        },
         retweetedBy: sql`null`,
     }).from(tweets).leftJoin(users, eq(tweets.senderID, users.id))
     .where(page==='profile'&&id ? whereProfile() : and(
@@ -60,6 +68,7 @@ export default async (limitPage:number, page:string, user?:User|null,type?:strin
         replies: countReplies,
         retweets: countRetweets,
         retweeted: isRetweeted,
+        reply: {id: replyId, name:replyName},
         retweetedBy: retweetUser.username,
     })
         .from(tweets)

@@ -9,6 +9,7 @@
         </div>
         <div :class="loading==='pending' && 'blur-md cursor-wait [&_*]:pointer-events-none'" class="flex flex-col gap-10 max-w-xl m-auto w-full lg:max-w-fit">
             <ProfilePost v-for="tweet in tweets"
+                @refresh-reply="refresh"
                 :post="tweet"
                 />
         </div>
@@ -27,7 +28,7 @@ const isBottom = useIsBottom(() => {
 },container)
 const {user} = useUser()
 const status = ref<'top'|'latest'|'media'>('latest')
-const {data:tweets, status:loading} = await useFetch<Tweet[]>(`/api/tweets/bookmarks`, {
+const {data:tweets, status:loading, refresh} = await useFetch<Tweet[]>(`/api/tweets/bookmarks`, {
     query: {
         type: status,
         page
