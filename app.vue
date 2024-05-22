@@ -2,7 +2,7 @@
   <div class="font-poppins font-medium bg-[#f2f2f2] dark:bg-[#121212] min-h-screen overflow-hidden">
     <MainHeader />
     <NuxtPage />
-    <MainFooter>created by Mihail Divulin - devChallenges.io</MainFooter>
+    <!-- <MainFooter>created by Mihail Divulin - devChallenges.io</MainFooter> -->
   </div>
 </template>
 
