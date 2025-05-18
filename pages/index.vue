@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-//tinyprofile -> followbutton needs to be added
     const pageMeta = definePageMeta({
         middleware: ['restrict-unauthed']
     })

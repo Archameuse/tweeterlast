@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-5">
         <div class="flex items-center w-full justify-between" >
-            <div class="flex items-center gap-4">
+            <NuxtLink :to="`./users/${user.id}`" class="flex items-center gap-4">
                 <div class="h-10">
                     <UserAvatar :image="user.image"/>
                 </div>
@@ -9,7 +9,7 @@
                     <span class="break-words">{{ getUserName(user) }}</span>
                     <span v-if="user.followers||user.followers===0" class="text-primaryGray dark:text-white font-noto-sans text-xs">{{ symbolFormatter(user.followers, 0) + ' Followers' }}</span>
                 </div>
-            </div>
+            </NuxtLink>
             <div class="max-w-16">
                 <FollowButton v-if="user.id&&loggedInUser?.id&&user.id!==loggedInUser.id" @response="follow" :profileId="user.id" :isFollowed="user.followed"/>
             </div>
