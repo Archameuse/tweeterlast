@@ -42,7 +42,7 @@
                 <div class="h-10">
                     <UserAvatar :image="user.image"/>
                 </div>
-                <div @click="showReply=true" class="flex-grow cursor-pointer min-h-full overflow-y-auto max-h-96 px-3 py-2 text-sm font-noto-sans bg-thirdaryGray dark:bg-secondaryGray rounded-xl">
+                <div @click="clickReplies" class="flex-grow cursor-pointer min-h-full overflow-y-auto max-h-96 px-3 py-2 text-sm font-noto-sans bg-thirdaryGray dark:bg-secondaryGray rounded-xl">
                     <div class="h-6 z-10 aspect-square float-right cursor-pointer">
                         <Icon name="ic:outline-image" size="100%" class="text-[#BDBDBD] dark:text-thirdaryGray hover:text-secondaryGray dark:hover:text-primaryGray active:text-primaryBlack dark:active:text-primaryBlack"/>
                     </div>
@@ -129,6 +129,12 @@ const clickRetweet = async () => {
         props.post.retweeted = !props.post.retweeted
     }
 }
+const clickReplies = () => {
+    if(props.post.replies>0) {
+        showReply.value=true
+    } else alert('There is no replies on this post')
+}
+
 const closeReply = (success?:true) => {
     showReply.value = false
     if(success) {
